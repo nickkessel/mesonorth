@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MesoNorth</title>
+        <style>
+            #tableHeaders {
+                white-space: pre;
+                color:darkblue;
+                background: #d2d2d2;
+                padding-block: 100px;
+            }
+            #obsBody {
+                text-align: center;
+            }
+            #status {
+                color:red;
+                font-size: larger;
+            }
+            #station-info {
+                color:green;
+                font-weight: 700;
+                white-space: pre;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>MesoNorth Obs Viewer</h1>
+        <div class = 'controls'>
+            <input type="text" id = 'stationChooser' placeholder="Enter Station Code (ex. KMOP)" autofocus>
+            <button id = 'getBtn'>Go!!</button>
+            <div>
+                <label><input type = 'radio' name='unit' value = 'metric'>Metric</label>
+                <label><input type = 'radio' name='unit' value = 'imperial' checked>Imperial</label>
+            </div>
+        </div>
+        <div id = 'status'>
+
+        </div>
+        <div id = 'station-info'>
+
+        </div>
+        <table>
+            <thead>
+                <tr id = 'tableHeaders'>
+                    <th>Date</th>
+                    <th id = 'timeHeader'>Time</th>
+                    <th id ='tempHeader'>Temp</th>
+                    <th id = 'dewHeader'>Dew</th>
+                    <th id = 'windHeader'>Wind Speed</th>
+                    <th id = 'windGustHeader'>Wind Gust</th>
+                    <th id = 'windDirHeader'>Wind Dir</th>
+                    <th id = 'pressureHeader'>Pressure</th>
+                    <th id = 'currentWxHeader'>Present WX</th>
+                    <th id = 'visHeader'>Visibility</th>
+                    <th id = 'ceilingHeader'>Ceiling</th>
+                </tr>
+            </thead>
+            <tbody id = 'obsBody'>
+
+            </tbody>
+        </table>
+        <script src = 'script.js'></script>
+    </body>
+</html>
