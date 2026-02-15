@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>MesoNorth</title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
         <style>
             #tableHeaders {
                 white-space: pre;
@@ -21,10 +22,15 @@
             }
             #station-info {
                 color:green;
-                font-weight: 700;
+                font-weight:bolder;
                 white-space: pre;
             }
+            td:nth-child(1), td:nth-child(2) { /*for the date and time columns*/
+               background: #dedede;
+            }
+
         </style>
+        
     </head>
     <body>
         <h1>MesoNorth Obs Viewer</h1>
@@ -56,6 +62,9 @@
                     <th id = 'currentWxHeader'>Present WX</th>
                     <th id = 'visHeader'>Visibility</th>
                     <th id = 'ceilingHeader'>Ceiling</th>
+                    <th id = 'prec1hrHeader'>Prec 1hr</th>
+                    <th id = 'prec6hrHeader'>Prec 6hr</th>
+                    <th id = 'prec24hrHeader'>Prec 24hr</th>
                 </tr>
             </thead>
             <tbody id = 'obsBody'>

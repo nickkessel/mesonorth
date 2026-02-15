@@ -27,7 +27,12 @@ async function getObservations() {
     
     try {
         const url = `https://api.weather.gov/stations/${stationId}/observations?limit=100`;
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            cache: 'no-store',
+            headers: {
+                'User-Agent': 'mesonorth, kesse1ni@cmich.edu'
+            }
+        });
 
         if (!response.ok) throw new Error('Station not found or API error.');
 
@@ -59,6 +64,9 @@ function renderTable() {
     const presentWxHeader = document.getElementById('currentWxHeader');
     const visHeader = document.getElementById('visHeader');
     const ceilingHeader = document.getElementById('ceilingHeader');
+    const prec1hrHeader = document.getElementById('prec1hrHeader');
+    const prec6hrHeader = document.getElementById('prec6hrHeader');
+    const prec24hrHeader = document.getElementById('prec24hrHeader');
     
     // Check which radio button is selected
     const isMetric = document.querySelector('input[name="unit"][value="metric"]').checked;
@@ -69,11 +77,15 @@ function renderTable() {
     dewHeader.textContent = isMetric ? 'Dewpoint \n(°C)' : 'Dewpoint \n(°F)';
     windHeader.textContent = isMetric ? 'Wind Speed \n(km/h)' : 'Wind Speed \n(mph)';
     windGustHeader.textContent = isMetric ? 'Wind Gust \n(km/h)' : 'Wind Gust \n(mph)';
-    windDirHeader.textContent = 'Wind Dir \n (deg)';
+    windDirHeader.textContent = 'Wind Dir \n (°)';
     pressureHeader.textContent = 'Pressure \n (mb)';
     presentWxHeader.textContent = 'Present WX';
     visHeader.textContent = isMetric ? 'Visibility \n (m)' : 'Visibility \n (mi)';
     ceilingHeader.textContent = isMetric ? 'Ceiling \n (m)' : 'Ceiling \n (ft)';
+    prec1hrHeader.textContent = isMetric ? 'Prec 1hr \n (mm)' : 'Prec 1hr \n (in)';
+    prec6hrHeader.textContent = isMetric ? 'Prec 6hr \n (mm)' : 'Prec 6hr \n (in)';
+    prec24hrHeader.textContent = isMetric ? 'Prec 24hr \n (mm)' : 'Prec 24hr \n (in)';
+
     
     tableHeaders.style.whiteSpace = 'pre';
     tableBody.innerHTML = '';
