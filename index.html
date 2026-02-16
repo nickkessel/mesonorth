@@ -5,8 +5,11 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>MesoNorth</title>
-        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="mesonorth/favicon.ico">
         <style>
+            #stationChooser {
+                width:15%;
+            }
             #tableHeaders {
                 white-space: pre;
                 color:darkblue;
@@ -25,9 +28,18 @@
                 font-weight:bolder;
                 white-space: pre;
             }
-            td:nth-child(1), td:nth-child(2) { /*for the date and time columns*/
+            td:nth-child(1) { /*for the date  columns*/
                background: #dedede;
+               
             }
+            tr:hover{
+                background: #efe4f7;
+            }
+            footer{
+                align-items: center;
+                font-style: italic;
+            }
+  
 
         </style>
         
@@ -73,4 +85,7 @@
         </table>
         <script src = 'script.js'></script>
     </body>
+    <footer>
+        imitation is the sincerest form of flattery
+    </footer>
 </html>
