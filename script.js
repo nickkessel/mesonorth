@@ -1,4 +1,5 @@
 let storedData = []; // Store data here to avoid re-fetching on toggle
+let darkMode = false;
 
 document.getElementById('getBtn').addEventListener('click', getObservations);
 document.getElementById('stationChooser').addEventListener('keydown', function(event) {
@@ -6,11 +7,24 @@ document.getElementById('stationChooser').addEventListener('keydown', function(e
         getObservations();
     }
 });
+themeBtn = document.getElementById('themeSwitcher');
+themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    
+    // Optional: Update button text
+    if (document.body.classList.contains('dark-mode')) {
+        themeBtn.textContent = "Light Mode";
+    } else {
+        themeBtn.textContent = "Dark Mode";
+    }
+});
 
 // Add event listeners to both radio buttons to trigger a re-render
 document.querySelectorAll('input[name="unit"]').forEach(radio => {
     radio.addEventListener('change', renderTable);
 });
+
+
 
 async function getObservations() {
     const stationInput = document.getElementById('stationChooser');
@@ -68,6 +82,7 @@ function renderTable() {
     const visHeader = document.getElementById('visHeader');
     const ceilingHeader = document.getElementById('ceilingHeader');
     const prec1hrHeader = document.getElementById('prec1hrHeader');
+    const prec3hrHeader = document.getElementById('prec3hrHeader');
     const prec6hrHeader = document.getElementById('prec6hrHeader');
     const prec24hrHeader = document.getElementById('prec24hrHeader');
 
@@ -99,7 +114,7 @@ function renderTable() {
         // 2. If it's an Intermediate (Special) report (< :50), 
         //    we update carryOver if rawVal > 0, otherwise we use existing carryOver.
         
-        if (minutes >= 51 && minutes <= 54) {  //should normally be the xx:53 obs
+        if (minutes >= 51 && minutes <= 58) {  //should normally be the xx:53 obs
             // Standard Hourly (Reset Point)
             precipMap.set(ts, rawVal);
             carryOverPrecip = 0; // Reset for the NEXT hour (starting immediately after this)
@@ -116,6 +131,7 @@ function renderTable() {
     // --- STEP B: SCAN FOR ACTIVE COLUMNS ---
     // Now check if we need to show the columns based on our NEW calculated values
     const hasP1 = Array.from(precipMap.values()).some(v => v > 0);
+    const hasP3 = storedData.some(f => (f.properties.precipitationLast3Hours?.value ?? 0) > 0);
     const hasP6 = storedData.some(f => (f.properties.precipitationLast6Hours?.value ?? 0) > 0);
     const hasP24 = storedData.some(f => (f.properties.precipitationLast24Hours?.value ?? 0) > 0);
 
@@ -138,6 +154,7 @@ function renderTable() {
     };
 
     setPrecipHeader(prec1hrHeader, hasP1, 'Prec 1hr\n(mm)', 'Prec 1hr\n(in)');
+    setPrecipHeader(prec3hrHeader, hasP3, 'Prec 3hr\n(mm)', 'Prec 3hr\n(in)');
     setPrecipHeader(prec6hrHeader, hasP6, 'Prec 6hr\n(mm)', 'Prec 6hr\n(in)');
     setPrecipHeader(prec24hrHeader, hasP24, 'Prec 24hr\n(mm)', 'Prec 24hr\n(in)');
 
@@ -221,8 +238,10 @@ function renderTable() {
                 // Use our calculated map instead of raw props
                 val = precipMap.get(props.timestamp) ?? 0;
             } else {
-                // For 6hr/24hr, use raw props
-                const key = type === '6hr' ? 'precipitationLast6Hours' : 'precipitationLast24Hours';
+                // For 3hr/6hr/24hr, use raw props
+                const key = type === '3hr' ? 'precipitationLast3Hours' : 
+                            type === '6hr' ? 'precipitationLast6Hours' :
+                            'precipitationLast24Hours';
                 val = props[key]?.value ?? 0;
             }
 
@@ -255,6 +274,7 @@ function renderTable() {
             <td>${formatVal(visVal, 2)}</td>
             <td>${ceilingDisplay}</td>
             ${getPrecipCell('1hr', hasP1)}
+            ${getPrecipCell('3hr', hasP3)}
             ${getPrecipCell('6hr', hasP6)}
             ${getPrecipCell('24hr', hasP24)}
         `;
